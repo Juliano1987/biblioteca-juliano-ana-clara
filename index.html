@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Biblioteca Juliano/Ana Clara</title>
+  <meta name="theme-color" content="#14100b" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Biblioteca familiar</p>
+      <h1>Biblioteca Juliano/Ana Clara</h1>
+      <p class="subtitle">Catálogo compartilhado com status de leitura, nota e comentário para Juliano, Ana Clara e Daine.</p>
+    </div>
+    <div class="actions">
+      <button id="btnInstall" class="secondary hidden">Instalar app</button>
+      <button id="btnRefresh" class="secondary">Atualizar</button>
+      <button id="btnNew" class="primary">+ Novo livro</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel sidebar">
+      <div class="status" id="status">Conectando...</div>
+      <div class="kpis">
+        <div><b id="kpiBooks">0</b><span>Livros</span></div>
+        <div><b id="kpiAuthors">0</b><span>Autores</span></div>
+        <div><b id="kpiCollections">0</b><span>Coleções</span></div>
+      </div>
+      <h2>Leitores</h2>
+      <div id="peopleStats" class="people"></div>
+      <hr />
+      <h2>Filtros</h2>
+      <label>Busca
+        <input id="search" placeholder="Título, autor, tema..." autocomplete="off" />
+      </label>
+      <label>Tema
+        <select id="filterTema"><option value="">Todos</option></select>
+      </label>
+      <label>Leitor
+        <select id="filterPerson"><option value="">Todos</option></select>
+      </label>
+      <label>Status
+        <select id="filterRead">
+          <option value="">Todos</option>
+          <option value="lido">Lido</option>
+          <option value="nao_lido">Não lido</option>
+        </select>
+      </label>
+      <label>Ordenar por
+        <select id="sortBy">
+          <option value="titulo">Título</option>
+          <option value="autor">Autor</option>
+          <option value="tema">Tema</option>
+          <option value="nota">Nota média</option>
+        </select>
+      </label>
+      <div class="exportbox">
+        <button id="btnExportJson" class="secondary full">Exportar JSON</button>
+        <button id="btnExportCsv" class="secondary full">Exportar CSV</button>
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="toolbar">
+        <h2>Livros</h2>
+        <span id="resultCount"></span>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div id="empty" class="empty hidden">Nenhum livro encontrado.</div>
+    </section>
+  </main>
+
+  <dialog id="bookDialog">
+    <form id="bookForm" method="dialog" class="dialog-body">
+      <div class="dialog-header">
+        <h2 id="dialogTitle">Livro</h2>
+        <button type="button" class="icon" id="btnClose">×</button>
+      </div>
+      <input type="hidden" id="bookId" />
+      <div class="form-grid">
+        <label>Título *<input id="titulo" required /></label>
+        <label>Autor<input id="autor" /></label>
+        <label>Tema<input id="tema" /></label>
+        <label>Subtema<input id="subtema" /></label>
+        <label>Coleção<input id="colecao" /></label>
+        <label>Volume<input id="volume" /></label>
+        <label>ISBN<input id="isbn" /></label>
+        <label>Ano<input id="ano" type="number" /></label>
+        <label>Páginas<input id="paginas" type="number" /></label>
+        <label>Localização<input id="localizacao" /></label>
+        <label class="wide">URL da capa<input id="capa_url" placeholder="https://..." /></label>
+        <label class="wide">Observações<textarea id="observacoes" rows="3"></textarea></label>
+      </div>
+      <h3>Leitura por pessoa</h3>
+      <div id="readingFields" class="reading-grid"></div>
+      <div class="dialog-actions">
+        <button type="button" id="btnDelete" class="danger hidden">Excluir</button>
+        <span></span>
+        <button type="button" id="btnCancel" class="secondary">Cancelar</button>
+        <button type="submit" class="primary">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="readingTemplate">
+    <section class="reading-card">
+      <h4></h4>
+      <label class="check"><input type="checkbox" data-field="lido" /> Lido</label>
+      <label class="check"><input type="checkbox" data-field="favorito" /> Favorito</label>
+      <label>Nota 0 a 10<input type="number" min="0" max="10" step="0.5" data-field="nota" /></label>
+      <label>Data início<input type="date" data-field="data_inicio" /></label>
+      <label>Data conclusão<input type="date" data-field="data_conclusao" /></label>
+      <label>Comentário<textarea data-field="comentario" rows="2"></textarea></label>
+    </section>
+  </template>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
